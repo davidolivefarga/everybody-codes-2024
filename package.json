@@ -1,0 +1,22 @@
+{
+    "name": "everybody-codes-2024",
+    "version": "1.0.0",
+    "description": "Solutions to Everybody Codes 2024, written in Javascript",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/davidolivefarga/everybody-codes-2024.git"
+    },
+    "keywords": [
+        "everybody-codes",
+        "everybody-codes-2024",
+        "everybody-codes-2024-solutions",
+        "everybody-codes-javascript",
+        "everybody-codes-2024-javascript",
+        "everybody-codes-2024-solutions-javascript"
+    ],
+    "engines": {
+        "node": ">=20.5.1"
+    },
+    "author": "David Olivé",
+    "license": "MIT"
+}
