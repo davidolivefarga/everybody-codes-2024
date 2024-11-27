@@ -45,7 +45,7 @@ Here's the list of all Quests, along with the completed Parts for each of them:
 | Quest                                               | Part I | Part II | Part III |
 | :-------------------------------------------------- | :----: | :-----: | :------: |
 | [Quest 1: The Battle for the Farmlands](./quest_01) |   🦆   |   🦆    |    🦆    |
-| [Quest 2: TBD](./quest_02)                          |        |         |          |
+| [Quest 2: The Runes of Power](./quest_02)           |   🦆   |   🦆    |    🦆    |
 | [Quest 3: TBD](./quest_03)                          |        |         |          |
 | [Quest 4: TBD](./quest_04)                          |        |         |          |
 | [Quest 5: TBD](./quest_05)                          |        |         |          |
