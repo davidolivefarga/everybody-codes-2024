@@ -18,5 +18,10 @@
         "node": ">=20.5.1"
     },
     "author": "David Olivé",
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "@eslint/js": "^9.15.0",
+        "eslint": "^9.15.0",
+        "globals": "^15.12.0"
+    }
 }
