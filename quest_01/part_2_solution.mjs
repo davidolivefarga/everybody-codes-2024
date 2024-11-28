@@ -1,7 +1,6 @@
-const fs = require("fs");
-const path = require("path");
+import { readInput } from "../input.mjs";
 
-const input = fs.readFileSync(path.join(__dirname, "part_2_input.txt"), "utf8");
+const input = readInput("quest_01/part_2_input.txt");
 
 const potionsPerCreature = { A: 0, B: 1, C: 3, D: 5, x: 0 };
 const extraPotionsPerGroup = { 0: 0, 1: 0, 2: 2 };

@@ -1,14 +1,13 @@
-const fs = require("fs");
-const path = require("path");
+import { readInput } from "../input.mjs";
 
-const input = fs.readFileSync(path.join(__dirname, "part_1_input.txt"), "utf8");
+const input = readInput("quest_01/part_1_input.txt");
 
 const potionsPerCreature = { A: 0, B: 1, C: 3 };
 
 function solve(creatures) {
     let amountOfPotions = 0;
 
-    for (creature of creatures) {
+    for (const creature of creatures) {
         amountOfPotions += potionsPerCreature[creature];
     }
 

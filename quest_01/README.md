@@ -4,23 +4,23 @@ You can find the Quest [here](https://everybody.codes/event/2024/quests/1).
 
 ## Part I
 
-### ✍🏼 Input
+### 🎯 Objective
 
-A list of creatures, each represented by a capital letter.
+We're given a list of creatures, each represented by a capital letter.
 
--   Creatures of type `A` require **0 healing potions** to be defeated.
--   Creatures of type `B` require **1 healing potions** to be defeated.
--   Creatures of type `C` require **3 healing potions** to be defeated.
-
-Example:
+For example:
 
 ```
 ABBAC
 ```
 
-### 🎯 Objective
+Each creature requires a different amount of healing potions to be defeated:
 
-Calculate the total amount of healing potions required to defeat all creatures.
+-   Creatures of type `A` require **0 healing potions** to be defeated.
+-   Creatures of type `B` require **1 healing potions** to be defeated.
+-   Creatures of type `C` require **3 healing potions** to be defeated.
+
+We want to calculate the amount of healing potions required to defeat all creatures.
 
 ### 📜 Solution
 
@@ -32,7 +32,7 @@ const potionsPerCreature = { A: 0, B: 1, C: 3 };
 function solve(creatures) {
     let amountOfPotions = 0;
 
-    for (creature of creatures) {
+    for (const creature of creatures) {
         amountOfPotions += potionsPerCreature[creature];
     }
 
@@ -42,13 +42,9 @@ function solve(creatures) {
 
 ## Part II
 
-### ✍🏼 Input
+### 🎯 Objective
 
-Same as before, but this time there's an additional creature type:
-
--   Creatures of type `D` require **5 healing potions** to be defeated\*.
-
-Also, an `x` means an empty spot with no creature in it.
+Again, we're given a list of creatures.
 
 Example:
 
@@ -56,15 +52,18 @@ Example:
 AxBCDDCAxD
 ```
 
-### 🎯 Objective
+This time there are two new possible types of creature:
 
-Calculate the total amount of healing potions required to defeat all creatures.
+-   Creatures of type `D` require **5 healing potions** to be defeated.
+-   An `x` indicates an empty spot with no creature in it.
 
-However, there's a twist: the list must be interpreted in groups of 2. When a group contains 2 creatures, defeating them requires **1 extra healing potion per creature**.
+Also, the list must now be interpreted in pairs. If a pair contains 2 creatures, defeating them requires **1 extra healing potion per creature**.
+
+We want to calculate the amount of healing potions required to defeat all creatures.
 
 ### 📜 Solution
 
-Straight-forward solution, the only thing worth mentioning is that the input guarantees that all groups will be complete (that is, `creatures.length % 2 === 0`). Otherwise, we would simply need to append `x` to the list until all groups are completed.
+Straight-forward solution, the only thing worth mentioning is that the input is guaranteed to have complete pairs (that is, `creatures.length % 2 === 0`). Otherwise, we would simply need to append `x` to the list until all groups are completed.
 
 ```js
 const potionsPerCreature = { A: 0, B: 1, C: 3, D: 5, x: 0 };
@@ -91,9 +90,9 @@ function solve(creatures) {
 
 ## Part III
 
-### ✍🏼 Input
+### 🎯 Objective
 
-Same as before.
+Again, we're given a list of creatures.
 
 Example:
 
@@ -101,15 +100,16 @@ Example:
 xBxAAABCDxCC
 ```
 
-### 🎯 Objective
+This time the list must be interpreted in groups of 3.
 
-Calculate the total amount of healing potions required to defeat all creatures.
+-   If a group contains 2 creatures, defeating them requires **1 extra healing potion per creature**.
+-   If a group contains 3 creatures, defeating them requires **2 extra healing potions per creature**.
 
-Again, there's an extra twist: the list must be interpreted in groups of 3. As before, when a group contains 2 creatures, defeating them requires **1 extra healing potion per creature**. But if a group contains 3 creatures, defeating them requires **2 extra healing potions per creature**.
+We want to calculate the amount of healing potions required to defeat all creatures.
 
 ### 📜 Solution
 
-Straight-forward solution, the only thing worth mentioning is that the input guarantees that all groups will be complete (that is, `creatures.length % 3 === 0`). Otherwise, we would simply need to append `x` to the list until all groups are completed.
+Straight-forward solution, the only thing worth mentioning is that the input is guaranteed to have complete groups (that is, `creatures.length % 3 === 0`). Otherwise, we would simply need to append `x` to the list until all groups are completed.
 
 ```js
 const potionsPerCreature = { A: 0, B: 1, C: 3, D: 5, x: 0 };
