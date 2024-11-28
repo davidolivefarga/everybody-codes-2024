@@ -1,29 +1,28 @@
-const fs = require("fs");
-const path = require("path");
+import { readInput } from "../input.mjs";
 
-const input = fs.readFileSync(path.join(__dirname, "part_3_input.txt"), "utf8");
+const input = readInput("quest_02/part_3_input.txt");
 
 function solve(notes) {
-    const [rawWords, _, ...rawSentences] = notes.split(/\n/);
+    const [rawWords, , ...rawGrid] = notes.split(/\n/);
 
     const words = rawWords.replace("WORDS:", "").trim().split(",");
-    const sentences = rawSentences.map((s) => s.trim());
+    const grid = rawGrid.map((s) => s.trim());
 
     words.push(...words.map((w) => w.split("").reverse().join("")));
 
     const symbolPositionsInGrid = new Set();
 
-    addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid);
-    addVerticalMatchPositions(sentences, words, symbolPositionsInGrid);
+    addHorizontalMatchPositions(grid, words, symbolPositionsInGrid);
+    addVerticalMatchPositions(grid, words, symbolPositionsInGrid);
 
     return symbolPositionsInGrid.size;
 }
 
-function addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid) {
-    sentences.forEach((sentence, row) => {
+function addHorizontalMatchPositions(grid, words, symbolPositionsInGrid) {
+    grid.forEach((sentence, row) => {
         const extendedSentence = sentence + sentence;
 
-        for (let word of words) {
+        for (const word of words) {
             const regex = new RegExp(word, "g");
 
             let match;
@@ -33,7 +32,7 @@ function addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid) {
                     const colExtended = i + match.index;
                     const col = colExtended % sentence.length;
 
-                    symbolPositionsInGrid.add(encode(row, col));
+                    symbolPositionsInGrid.add(encodeGridPosition(row, col));
                 }
 
                 regex.lastIndex = match.index + 1;
@@ -42,20 +41,18 @@ function addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid) {
     });
 }
 
-function addVerticalMatchPositions(sentences, words, symbolPositionsInGrid) {
-    const rows = sentences.length;
-    const cols = sentences[0].length;
+function addVerticalMatchPositions(grid, words, symbolPositionsInGrid) {
+    const cols = grid[0].length;
+    const rotatedGrid = new Array(cols).fill("");
 
-    const rotatedSentences = new Array(cols).fill("");
-
-    sentences.forEach((sentence, row) => {
+    for (const sentence of grid) {
         for (let col = 0; col < cols; col++) {
-            rotatedSentences[col] += sentence[col];
+            rotatedGrid[col] += sentence[col];
         }
-    });
+    }
 
-    rotatedSentences.forEach((sentence, row) => {
-        for (let word of words) {
+    rotatedGrid.forEach((sentence, row) => {
+        for (const word of words) {
             const regex = new RegExp(word, "g");
 
             let match;
@@ -64,7 +61,7 @@ function addVerticalMatchPositions(sentences, words, symbolPositionsInGrid) {
                 for (let i = 0; i < word.length; i++) {
                     const col = i + match.index;
 
-                    symbolPositionsInGrid.add(encode(col, row));
+                    symbolPositionsInGrid.add(encodeGridPosition(col, row));
                 }
 
                 regex.lastIndex = match.index + 1;
@@ -73,7 +70,7 @@ function addVerticalMatchPositions(sentences, words, symbolPositionsInGrid) {
     });
 }
 
-function encode(row, column) {
+function encodeGridPosition(row, column) {
     return `${row};${column}`;
 }
 

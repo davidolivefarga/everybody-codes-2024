@@ -4,9 +4,9 @@ You can find the Quest [here](https://everybody.codes/event/2024/quests/2).
 
 ## Part I
 
-### ✍🏼 Input
+### 🎯 Objective
 
-Some notes containing a list of words and a sentence.
+We're given a list of unique words and a sentence.
 
 Example:
 
@@ -16,25 +16,33 @@ WORDS:THE,OWE,MES,ROD,HER
 AWAKEN THE POWER ADORNED WITH THE FLAMES BRIGHT IRE
 ```
 
-### 🎯 Objective
-
-Count the occurences of a word in the sentence.
+We want to count all occurrences of any word within the sentence.
 
 ### 📜 Solution
 
-Straight-forward solution, nothing interesting to add.
+The only tricky part here is to take care of potential overlaps (for example, the word `AAA` appears twice in the sentence `AAAA`).
 
-I'm not considering overlaps because they are not needed for this part.
+If you, like me, enjoy using regexes for these type of situations, make sure to adjust the regex index to support overlapping matches.
 
 ```js
 function solve(notes) {
-    const words = notes.split(/\n/)[0].replace("WORDS:", "").trim().split(",");
-    const sentence = notes.split(/\n/)[2];
+    const [rawWords, , rawSentence] = notes.split(/\n/);
+
+    const words = rawWords.replace("WORDS:", "").trim().split(",");
+    const sentence = rawSentence.trim();
 
     let wordsInSentence = 0;
 
-    for (let word of words) {
-        wordsInSentence += sentence.split(word).length - 1;
+    for (const word of words) {
+        const regex = new RegExp(word, "g");
+
+        let match;
+
+        while ((match = regex.exec(sentence))) {
+            wordsInSentence++;
+
+            regex.lastIndex = match.index + 1;
+        }
     }
 
     return wordsInSentence;
@@ -43,9 +51,9 @@ function solve(notes) {
 
 ## Part II
 
-### ✍🏼 Input
+### 🎯 Objective
 
-Same as before, but this time we have multiple sentences.
+This time we're also given a list of unique words, but now we have multiple sentences.
 
 Example:
 
@@ -59,21 +67,19 @@ THERE IS THE END
 QAQAQ
 ```
 
-### 🎯 Objective
+To make things more complicated, words can now appear in both directions (left-to-right and right-to-left).
 
-For each sentence, count the number of characters that make up the words that appear on it. This time, words can appear in both directions.
-
-Find the total amount of characters across all sentences.
+We want to find the number of characters that make up the words that appear in any sentence.
 
 ### 📜 Solution
 
-This time is a bit more tricky, because there will be overlaps... But this can easily be addressed by keeping track of the visited positions, to avoid counting them more than once.
+To account for the fact that words can appear in both directions, we can simply extend the initial word list by adding the reverse of all words.
 
-To account for the fact that words can appear in both directions, I'm simply extending the initial word list by adding the reverse of all words.
+Besides that, the only thing we need to worry about is to avoid counting the same character more than once whenever there's an overlap, but this can easily be addressed by keeping track of the visited characters on each sentence, for example using a set.
 
 ```js
 function solve(notes) {
-    const [rawWords, _, ...rawSentences] = notes.split(/\n/);
+    const [rawWords, , ...rawSentences] = notes.split(/\n/);
 
     const words = rawWords.replace("WORDS:", "").trim().split(",");
     const sentences = rawSentences.map((s) => s.trim());
@@ -82,7 +88,7 @@ function solve(notes) {
 
     let symbolsInSentences = 0;
 
-    for (let sentence of sentences) {
+    for (const sentence of sentences) {
         symbolsInSentences += countSymbolsInSentence(sentence, words);
     }
 
@@ -92,7 +98,7 @@ function solve(notes) {
 function countSymbolsInSentence(sentence, words) {
     const symbolPositionsInSentence = new Set();
 
-    for (let word of words) {
+    for (const word of words) {
         const regex = new RegExp(word, "g");
 
         let match;
@@ -128,40 +134,54 @@ TRODEOAL
 
 ### 🎯 Objective
 
-Same as before, we want to count the number of characters that make up the words that appear on it, but there's a couple twists:
+Again we're also given a list of unique words and a list of sentence, but this time the sentences form a grid.
 
--   Words can appear horizontally and vertically in the grid: left to right, right to left, top to bottom, bottom to top
--   The right edge of the grid connects with the left one, forming a cylinder
+Example:
+
+```
+WORDS:THE,OWE,MES,ROD,RODEO
+
+HELWORLT
+ENIGWDXL
+TRODEOAL
+```
+
+Of course, there are a couple twists to make things more complicated:
+
+-   Words can appear both horizontally and vertically in the grid: left-to-right, right-to-left, top-to-bottom and bottom-to-top.
+-   The right edge of the grid connects with the left one, forming a cylinder.
+
+We want to find the number of characters that make up the words that appear in the grid.
 
 ### 📜 Solution
 
-The core idea is the same as before, but we need a couple tricks to overcome the twists:
+Same idea as before, but we need a couple tricks to overcome the twists:
 
--   To take care of vertical words, we simply rotate the grid and look for words in this new grid. We just need to remember that rows and columns are swapped when we mark a position as visited.
--   To take care of the connection between the left and right edges when looking for horizontal words, we can simply extend each row by duplicating it. We just need to remember to adjust the column to the real row when marking a position as visited.
+-   To take care of vertical words, we rotate the grid and look for word matches in this new grid. We just need to remember that rows and columns are swapped when we mark a grid position as visited.
+-   To take care of the connection between the left and right edges when looking for horizontal words, instead of looking for words in each sentence we do it in a "fake" sentence consisting of the original sentence repeated twice. For example, if the sentence is `ABCD`, the fake sentence is `ABCDABCD`; this lets us find words like `CDAB`. We just need to remember to adjust the column to the original sentence when marking a position as visited.
 
 ```js
 function solve(notes) {
-    const [rawWords, _, ...rawSentences] = notes.split(/\n/);
+    const [rawWords, , ...rawGrid] = notes.split(/\n/);
 
     const words = rawWords.replace("WORDS:", "").trim().split(",");
-    const sentences = rawSentences.map((s) => s.trim());
+    const grid = rawGrid.map((s) => s.trim());
 
     words.push(...words.map((w) => w.split("").reverse().join("")));
 
     const symbolPositionsInGrid = new Set();
 
-    addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid);
-    addVerticalMatchPositions(sentences, words, symbolPositionsInGrid);
+    addHorizontalMatchPositions(grid, words, symbolPositionsInGrid);
+    addVerticalMatchPositions(grid, words, symbolPositionsInGrid);
 
     return symbolPositionsInGrid.size;
 }
 
-function addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid) {
-    sentences.forEach((sentence, row) => {
+function addHorizontalMatchPositions(grid, words, symbolPositionsInGrid) {
+    grid.forEach((sentence, row) => {
         const extendedSentence = sentence + sentence;
 
-        for (let word of words) {
+        for (const word of words) {
             const regex = new RegExp(word, "g");
 
             let match;
@@ -171,7 +191,7 @@ function addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid) {
                     const colExtended = i + match.index;
                     const col = colExtended % sentence.length;
 
-                    symbolPositionsInGrid.add(encode(row, col));
+                    symbolPositionsInGrid.add(encodeGridPosition(row, col));
                 }
 
                 regex.lastIndex = match.index + 1;
@@ -180,20 +200,18 @@ function addHorizontalMatchPositions(sentences, words, symbolPositionsInGrid) {
     });
 }
 
-function addVerticalMatchPositions(sentences, words, symbolPositionsInGrid) {
-    const rows = sentences.length;
-    const cols = sentences[0].length;
+function addVerticalMatchPositions(grid, words, symbolPositionsInGrid) {
+    const cols = grid[0].length;
+    const rotatedGrid = new Array(cols).fill("");
 
-    const rotatedSentences = new Array(cols).fill("");
-
-    sentences.forEach((sentence, row) => {
+    for (const sentence of grid) {
         for (let col = 0; col < cols; col++) {
-            rotatedSentences[col] += sentence[col];
+            rotatedGrid[col] += sentence[col];
         }
-    });
+    }
 
-    rotatedSentences.forEach((sentence, row) => {
-        for (let word of words) {
+    rotatedGrid.forEach((sentence, row) => {
+        for (const word of words) {
             const regex = new RegExp(word, "g");
 
             let match;
@@ -202,7 +220,7 @@ function addVerticalMatchPositions(sentences, words, symbolPositionsInGrid) {
                 for (let i = 0; i < word.length; i++) {
                     const col = i + match.index;
 
-                    symbolPositionsInGrid.add(encode(col, row));
+                    symbolPositionsInGrid.add(encodeGridPosition(col, row));
                 }
 
                 regex.lastIndex = match.index + 1;
@@ -211,7 +229,7 @@ function addVerticalMatchPositions(sentences, words, symbolPositionsInGrid) {
     });
 }
 
-function encode(row, column) {
+function encodeGridPosition(row, column) {
     return `${row};${column}`;
 }
 ```

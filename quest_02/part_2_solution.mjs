@@ -1,10 +1,9 @@
-const fs = require("fs");
-const path = require("path");
+import { readInput } from "../input.mjs";
 
-const input = fs.readFileSync(path.join(__dirname, "part_2_input.txt"), "utf8");
+const input = readInput("quest_02/part_2_input.txt");
 
 function solve(notes) {
-    const [rawWords, _, ...rawSentences] = notes.split(/\n/);
+    const [rawWords, , ...rawSentences] = notes.split(/\n/);
 
     const words = rawWords.replace("WORDS:", "").trim().split(",");
     const sentences = rawSentences.map((s) => s.trim());
@@ -13,7 +12,7 @@ function solve(notes) {
 
     let symbolsInSentences = 0;
 
-    for (let sentence of sentences) {
+    for (const sentence of sentences) {
         symbolsInSentences += countSymbolsInSentence(sentence, words);
     }
 
@@ -23,7 +22,7 @@ function solve(notes) {
 function countSymbolsInSentence(sentence, words) {
     const symbolPositionsInSentence = new Set();
 
-    for (let word of words) {
+    for (const word of words) {
         const regex = new RegExp(word, "g");
 
         let match;
