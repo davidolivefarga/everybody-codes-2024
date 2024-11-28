@@ -118,20 +118,6 @@ function countSymbolsInSentence(sentence, words) {
 
 ## Part III
 
-### ✍🏼 Input
-
-Same as before, but this time the sentences are guaranteed to form a grid.
-
-Example:
-
-```
-WORDS:THE,OWE,MES,ROD,RODEO
-
-HELWORLT
-ENIGWDXL
-TRODEOAL
-```
-
 ### 🎯 Objective
 
 Again we're also given a list of unique words and a list of sentence, but this time the sentences form a grid.
