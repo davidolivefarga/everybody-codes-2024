@@ -120,7 +120,7 @@ function countSymbolsInSentence(sentence, words) {
 
 ### 🎯 Objective
 
-Again we're also given a list of unique words and a list of sentence, but this time the sentences form a grid.
+Again we're also given a list of unique words and a list of sentences, but this time the sentences form a grid.
 
 Example:
 
