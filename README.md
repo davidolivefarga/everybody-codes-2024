@@ -21,11 +21,11 @@ Thanks [Emil Kaczyński](https://www.linkedin.com/in/emil-kaczy%C5%84ski-a5a0587
 Every Quest has its own folder:
 
 -   `part_1_input.txt`: input for Part I
--   `part_1_solution.js`: solution for Part I
+-   `part_1_solution.mjs`: solution for Part I
 -   `part_2_input.txt`: input for Part II
--   `part_2_solution.js`: solution for Part II
+-   `part_2_solution.mjs`: solution for Part II
 -   `part_3_input.txt`: input for Part III
--   `part_3_solution.js`: solution for Part III
+-   `part_3_solution.mjs`: solution for Part III
 -   `README.md`: explanation for Part I, II and III solutions
 
 ## How to run
@@ -35,7 +35,7 @@ You just need Node >=20.5.1 to run the solutions.
 For example, if you want to run the solution of Quest 1 / Part I:
 
 ```bash
-node quest_01/part_1_solution
+node quest_01/part_1_solution.mjs
 ```
 
 ## Completed quests
