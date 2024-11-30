@@ -47,7 +47,7 @@ Here's the list of all Quests, along with the completed Parts for each of them:
 | [Quest 1: The Battle for the Farmlands](./quest_01) |   🦆   |   🦆    |    🦆    |
 | [Quest 2: The Runes of Power](./quest_02)           |   🦆   |   🦆    |    🦆    |
 | [Quest 3: Mining Maestro](./quest_03)               |   🦆   |   🦆    |    🦆    |
-| [Quest 4: TBD](./quest_04)                          |        |         |          |
+| [Quest 4: Royal Smith's Puzzle](./quest_04)         |   🦆   |   🦆    |    🦆    |
 | [Quest 5: TBD](./quest_05)                          |        |         |          |
 | [Quest 6: TBD](./quest_06)                          |        |         |          |
 | [Quest 7: TBD](./quest_07)                          |        |         |          |
